@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Exam - Round 1 | Online ESSLCE-equivalent Practice Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f0f2f5;
+            color: #1d2125;
+            line-height: 1.5;
+            font-size: 0.9375rem;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            z-index: 1030;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .navbar-brand {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f6cbf;
+            text-decoration: none;
+        }
+
+        .navbar-brand span {
+            font-size: 0.7rem;
+            font-weight: normal;
+            color: #6a737b;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quiz-timer {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .quiz-timer.warning {
+            background: #ca3120;
+            color: white;
+            border-color: #a01a0c;
+        }
+
+        .drawer-toggle {
+            background: #0f6cbf;
+            border: none;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .drawer-toggle:hover {
+            background: #094478;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #dee2e6;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            color: #6a737b;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #ca3120;
+            color: white;
+            border-color: #ca3120;
+        }
+
+        .drawer-right {
+            position: fixed;
+            top: 60px;
+            right: -320px;
+            width: 320px;
+            height: calc(100% - 60px);
+            background: white;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            z-index: 1020;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 1rem;
+            border-left: 1px solid #dee2e6;
+        }
+
+        .drawer-right.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .drawer-header h3 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .drawer-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 1015;
+            display: none;
+        }
+
+        .drawer-overlay.show {
+            display: block;
+        }
+
+        .qn-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .qnbutton {
+            display: inline-block;
+            width: 2.5rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #bbb;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            color: #1d2125;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .qnbutton.thispage {
+            border: 2px solid #0f6cbf;
+            font-weight: bold;
+        }
+
+        .qnbutton.answered {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .qnbutton.flagged::after {
+            content: "⚑";
+            position: absolute;
+            top: -5px;
+            right: -3px;
+            background: #ca3120;
+            color: white;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .othernav {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .endtestlink {
+            display: block;
+            text-align: center;
+            background: #28a745;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .endtestlink:hover {
+            background: #1e7e34;
+        }
+
+        .breadcrumb-container {
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+            margin-top: 60px;
+        }
+
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.8rem;
+        }
+
+        .breadcrumb a {
+            color: #0f6cbf;
+            text-decoration: none;
+        }
+
+        .page-header {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 0 1.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1d2125;
+        }
+
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .que {
+            margin-bottom: 2rem;
+            clear: left;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 1rem;
+            background: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .info {
+            float: left;
+            width: 7rem;
+            padding: 0.5rem;
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            margin-right: 1rem;
+        }
+
+        .qno {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .state {
+            font-size: 0.7rem;
+            color: #6a737b;
+        }
+
+        .questionflag {
+            margin-top: 0.5rem;
+        }
+
+        .flag-action {
+            background: none;
+            border: none;
+            color: #adb5bd;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .flag-action.active {
+            color: #ca3120;
+        }
+
+        .content {
+            margin-left: 8rem;
+        }
+
+        .qtext {
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .ablock {
+            margin: 0.7rem 0;
+        }
+
+        .answer {
+            margin-bottom: 0.5rem;
+        }
+
+        .r0, .r1 {
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .r0 input, .r1 input {
+            margin: 0;
+        }
+
+        .answernumber {
+            font-weight: normal;
+            min-width: 1.5rem;
+        }
+
+        .qtype_multichoice_clearchoice {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .qtype_multichoice_clearchoice a {
+            color: #0f6cbf;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .submitbtns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .mod_quiz-next-nav, .mod_quiz-prev-nav {
+            background: #0f6cbf;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .summary-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .modal-btn-primary, .modal-btn-secondary {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            flex: 1;
+            border: none;
+        }
+
+        .modal-btn-primary {
+            background: #28a745;
+            color: white;
+        }
+
+        .modal-btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #6a737b;
+            font-size: 0.75rem;
+            border-top: 1px solid #dee2e6;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .info {
+                float: none;
+                width: auto;
+                margin-bottom: 1rem;
+            }
+            .content {
+                margin-left: 0;
+            }
+            .drawer-right {
+                width: 280px;
+            }
+            .navbar-brand {
+                font-size: 0.8rem;
+            }
+            .quiz-timer {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="#" class="navbar-brand">🏫 Online ESSLCE-equivalent<br><span>Exam Practice Portal</span></a>
+    <div class="navbar-right">
+        <div class="quiz-timer" id="quizTimer">Time left <span id="quiz-time-left">01:30:00</span></div>
+        <button class="drawer-toggle" id="openDrawerBtn">📋 Navigation</button>
+        <button class="logout-btn" id="logoutBtn">🚪 Logout</button>
+    </div>
+</nav>
+
+<div class="drawer-right" id="quizDrawer">
+    <div class="drawer-header">
+        <h3>Quiz navigation</h3>
+        <button class="drawer-close" id="closeDrawerBtn">✕</button>
+    </div>
+    <div class="qn-buttons" id="qnButtons"></div>
+    <div class="othernav">
+        <a class="endtestlink" id="finishAttemptLink">Finish attempt ...</a>
+    </div>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <a href="rounds.html">Home</a> / <a href="exams1.html">Round 1</a> / <span>English</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <h1>English</h1>
+</div>
+
+<div class="main-wrapper">
+    <div class="main-content">
+        <div id="questionsContainer"></div>
+        <div class="submitbtns" id="pageNavButtons">
+            <button class="mod_quiz-next-nav" id="nextPageBtn">Next page</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Online ESSLCE-equivalent Exam Practice Portal | English - Round 1</p>
+</footer>
+
+<div id="summaryModal" class="modal">
+    <div class="modal-content">
+        <h2>📋 Quiz Summary</h2>
+        <div id="summaryList"></div>
+        <div class="modal-buttons">
+            <button class="modal-btn-secondary" id="cancelSummaryBtn">Go back</button>
+            <button class="modal-btn-primary" id="submitFinalBtn">Submit all and finish</button>
+        </div>
+    </div>
+</div>
+
+<div id="scoreModal" class="modal">
+    <div class="modal-content">
+        <h2>📊 Exam Results</h2>
+        <div id="scoreDetails"></div>
+        <button class="modal-btn-primary" id="closeScoreBtn">Close</button>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // ENGLISH EXAM - 60 QUESTIONS (Round 1)
+    // FIXED: Navigation now jumps to correct page
+    // ============================================
+
+    const questions = [
+        { text: "are/planning/long/to/stay/you/USA/in/how", options: ["Are you planning how long to stay in USA?", "USA you are planning to stay how long?", "How long are you planning to stay in USA?", "To stay how long in USA are you planning?"], correct: 2 },
+        { text: "beautiful/you/have/a/what/place", options: ["What a beautiful place you have!", "Have you a beautiful what place?", "Beautiful a place you have beautiful.", "You have what a beautiful place."], correct: 0 },
+        { text: "takes /to/hard work/it/and/commitment/successful/become", options: ["Hard work to become successful and it takes commitment.", "It takes hard work and commitment to become successful.", "Become successful and hard work commitment to successful it.", "Successful and commitment it takes hard work to become."], correct: 1 },
+        { text: "The manager is known for making an arbitrary decision without consulting the team.", options: ["fair", "random", "logical", "planned"], correct: 1 },
+        { text: "The data they sent us were obsolete and could not be used for the current study.", options: ["up-to-the-minute", "accurate", "out-of-date", "valuable"], correct: 2 },
+        { text: "His argument was ambiguous, leaving the audience confused about his stance.", options: ["clear", "loud", "credible", "nebulous"], correct: 3 },
+        { text: "The rains are erratic this year, making farming difficult.", options: ["inconsistent", "heavy", "predictable", "consistent"], correct: 0 },
+        { text: "Whenever you find a new word, never _____ it in a dictionary before trying to understand the context.", options: ["look at", "look up", "look in", "look out"], correct: 1 },
+        { text: "The boys are trying to______ their father's blood. He was murdered while working.", options: ["avenge", "murder", "procure", "donate"], correct: 0 },
+        { text: "Ten peasants from the neighborhood are said to have_________ crossing the river.", options: ["sunk", "swum", "drown", "eaten"], correct: 2 },
+        { text: "My car ____________on my way to the airport to receive an old friend.", options: ["broke down", "broke up", "broke into", "broke out"], correct: 0 },
+        { text: "The students visited the museum and spent several hours with the ______, who was very helpful.", options: ["commissioner", "steward", "curator", "agent"], correct: 2 },
+        { text: "As it is used in the last sentence in paragraph 1, the word 'exhausted' most nearly means:", options: ["famished", "depleted", "fatigued", "derived"], correct: 1 },
+        { text: "Based on the first paragraph, which statement would best coincide with the author's opinion of advertisers who sell 'carb-free' products?", options: ["Advertisers have consumers' best interests in mind.", "Advertisers are money-hungry people.", "Despite their best intentions, advertisers are contributing to obesity.", "Advertisers are not promoting the truth."], correct: 2 },
+        { text: "According to the passage, which is NOT one of the essential health benefits of carbohydrates mentioned?", options: ["Prevention of chronic pulmonary disorders", "Prevention of stroke", "Prevention of heart disease and diabetes", "Prevention of cancer"], correct: 0 },
+        { text: "It can be reasonably inferred that a diet that incorporates pasta and rice is one that is:", options: ["lacking enough protein and fat", "high in carbohydrates and low in fiber", "balanced because the body needs carbohydrates", "reasonable despite lack of necessity"], correct: 2 },
+        { text: "The main function of the last paragraph is to:", options: ["describe ways to lead a healthy lifestyle", "describe how carbohydrates can be helpful", "persuade readers to make up their own minds", "persuade readers to trust nutritionists instead of advertisers"], correct: 3 },
+        { text: "The writer's opinion about the text is:", options: ["Advocate what the advertisers say.", "Advocate what the experts say.", "He has never had any opinion.", "He dislikes any carbohydrate products."], correct: 1 },
+        { text: "'But carbohydrates certainly should not be shunned altogether.' The word 'shunned' here means:", options: ["Avoided", "embraced", "used", "sold"], correct: 0 },
+        { text: "In paragraph 1, 'them' refers to:", options: ["carbohydrates", "consumers", "Americans", "food companies"], correct: 0 },
+        { text: "In paragraph 3, 'They' refers to:", options: ["Muscles", "Scientific studies", "Organs, tissues and cells", "Carbohydrates"], correct: 3 },
+        { text: "Ellilta: Tell me about your new teacher. What's he like? Samuel: ______________. He is from Adama.", options: ["He is a bit obese.", "He is a kind and honest person.", "He has got a leather.", "He wears blue jeans."], correct: 1 },
+        { text: "A: I cannot get an answer from Tizita. I've called her five times. B: _____________. She is always forgetting to charge her phone.", options: ["Her phone should have run out.", "Her phone must have run out.", "Her phone ought to have run out.", "Her phone would have run out."], correct: 1 },
+        { text: "Alex: What do you make of the current situation? Belen: Well, _____________. We need to be more careful.", options: ["honestly speaking, things are far worse", "I was hoping you could help me", "That is not true", "I'm afraid I couldn't agree more"], correct: 0 },
+        { text: "Liya: Excuse me, do you have a minute? Sami: ________________ I am overwhelmed with my assignment already.", options: ["Can't it wait?", "I am listening", "What're you talking about?", "I am speechless"], correct: 0 },
+        { text: "Lakew: We're throwing a party on Tuesday. You're our guest! Soliana: Thanks, but________. Maybe another time!", options: ["I would love to", "whatever you say", "I have a conflicting priority", "I am flattered"], correct: 2 },
+        { text: "Biniam: Good morning sir. I am calling in sick. Boss: __________________", options: ["I am sorry but I don't know my way.", "Why don't you call an emergency?", "Oh, poor you! Maybe you should see a doctor.", "Your new jumper really flatters you!"], correct: 2 },
+        { text: "Which of the following is the correct spelling?", options: ["Occurrence", "Ocurrence", "Occurence", "Occurencce"], correct: 0 },
+        { text: "In a formal business letter, where does the date usually go?", options: ["At the very bottom", "Below the sender's address", "Inside the signature block", "It is not necessary"], correct: 1 },
+        { text: "A paragraph that tells a story or recounts an event is called:", options: ["Expository", "Narrative", "Descriptive", "Persuasive"], correct: 1 },
+        { text: "When writing a formal letter, 'Yours faithfully' is used when:", options: ["You know the person well", "You don't know the name of the person", "It's a family member", "It's a job application only"], correct: 1 },
+        { text: "I will never forget the day I walked into the UNGA hall. My heart was pounding... This is:", options: ["Descriptive", "Narrative", "Expository", "Persuasive"], correct: 1 },
+        { text: "Choose the sentence with correct punctuation:", options: ["I have three favorite colors: blue, green, and red.", "I have three favorite colors; blue, green, and red.", "I have three favorite colors, blue, green, and red.", "I have three favorite colors—blue green and red."], correct: 0 },
+        { text: "Belen had a car accident last night and was rushed to ____________ hospital.", options: ["the", "_", "a", "an"], correct: 1 },
+        { text: "Ethiopians are ________ people in the world.", options: ["more religious", "as religious as", "the most religious", "religious than"], correct: 2 },
+        { text: "Fozia: We are having a hard time starting the car. Keneni: Do not worry. I _________ a mechanic.", options: ["will call", "am calling", "am going to call", "will not call"], correct: 0 },
+        { text: "Hannah warned the children____________ the tourists luggage.", options: ["not to touch", "to touch not", "to not touch", "touch not to"], correct: 0 },
+        { text: "He does not seem to have ________ knowledge of medicine.", options: ["no", "much", "many", "most"], correct: 1 },
+        { text: "He is ___________ an intelligent student that he passed without studying.", options: ["so", "such", "very", "too"], correct: 1 },
+        { text: "Henok speaks Spanish fluently and _________ his sister.", options: ["so did", "neither does", "nor has", "so did not"], correct: 0 },
+        { text: "Hiking in Wenchi Eco-lodge was _____________ than we thought.", options: ["more terrifying", "the more terrifying", "terrifying", "the most terrifying"], correct: 0 },
+        { text: "I am not used ________ up so early in the morning.", options: ["get", "to get", "to getting", "getting"], correct: 2 },
+        { text: "I think it _______________ this afternoon. There is a lot of flood.", options: ["has been raining", "is raining", "has rained", "was rained"], correct: 0 },
+        { text: "I wish Bisrat _______ snoring during the night. I cannot sleep.", options: ["was stopping", "would stop", "is going to stop", "could not stop"], correct: 1 },
+        { text: "If the students ________ more time, they would have finished.", options: ["have", "had", "had had", "would have"], correct: 1 },
+        { text: "kidest, _______________ we met last night, works for an international tech company.", options: ["which", "when", "whom", "whose"], correct: 2 },
+        { text: "You can use the library _________ you stick to the schedule and rules.", options: ["as long as", "as far as", "as well as", "as soon as"], correct: 0 },
+        { text: "One of our relatives _________________French fluently.", options: ["speak", "do not speak", "speaks", "have spoken"], correct: 2 },
+        { text: "Roman put _____________ sugar in the milk. We couldn't drink it.", options: ["too many", "neither", "too much", "a few"], correct: 2 },
+        { text: "Ruth bought candies to Fasika, Melat, and the ____________ girl in the club.", options: ["another", "whether", "either", "other"], correct: 3 },
+        { text: "Mekdes: What _____________ after class? Adoni: I usually play video games.", options: ["did you do", "do you do", "have you done", "are you doing"], correct: 1 },
+        { text: "We are looking forward to ________ her old friends at the reunion.", options: ["meet", "met", "meeting", "bemeet"], correct: 2 },
+        { text: "The book, ________ the athlete published last month, has sold over 100K copies.", options: ["that", "which", "where", "whose"], correct: 1 },
+        { text: "The children_____________ when their teacher stepped in the classroom suddenly.", options: ["have played", "was playing", "were playing", "are playing"], correct: 2 },
+        { text: "____________ her carelessness, the woman has been assigned as a team leader.", options: ["Besides", "Although", "Despite", "So that"], correct: 2 },
+        { text: "The teacher ___________ at Addis Abeba University for a decade.", options: ["was teach", "has taught", "will teach", "is teaching"], correct: 1 },
+        { text: "There are twenty five students in our class. Maya, Eden and Lidia are the only girls. So, ______ of my classmates are boys.", options: ["none", "some", "both", "most"], correct: 3 }
+    ];
+
+    console.log("Loaded", questions.length, "English questions");
+
+    let userAnswers = new Array(questions.length).fill(null);
+    let flagged = new Array(questions.length).fill(false);
+    let currentPage = 0;
+    const QUESTIONS_PER_PAGE = 15;
+    let timeSeconds = 5400;
+    let timerInterval = null;
+
+    const questionsContainer = document.getElementById('questionsContainer');
+    const qnButtonsContainer = document.getElementById('qnButtons');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const finishAttemptLink = document.getElementById('finishAttemptLink');
+    const quizTimeLeft = document.getElementById('quiz-time-left');
+    const quizTimer = document.getElementById('quizTimer');
+    const openDrawerBtn = document.getElementById('openDrawerBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const quizDrawer = document.getElementById('quizDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const summaryModal = document.getElementById('summaryModal');
+    const scoreModal = document.getElementById('scoreModal');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function formatTime(sec) {
+        let hours = Math.floor(sec / 3600);
+        let minutes = Math.floor((sec % 3600) / 60);
+        let seconds = sec % 60;
+        return `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    function updateTimerDisplay() {
+        quizTimeLeft.textContent = formatTime(timeSeconds);
+        if (timeSeconds <= 100) {
+            quizTimer.classList.add('warning');
+        }
+    }
+
+    function saveToLocalStorage() {
+        localStorage.setItem('english_answers', JSON.stringify(userAnswers));
+        localStorage.setItem('english_flagged', JSON.stringify(flagged));
+    }
+
+    function loadFromLocalStorage() {
+        let saved = localStorage.getItem('english_answers');
+        if (saved) userAnswers = JSON.parse(saved);
+        let savedFlags = localStorage.getItem('english_flagged');
+        if (savedFlags) flagged = JSON.parse(savedFlags);
+    }
+
+    function renderQuestions() {
+        const start = currentPage * QUESTIONS_PER_PAGE;
+        const end = Math.min(start + QUESTIONS_PER_PAGE, questions.length);
+        let html = '';
+
+        for (let i = start; i < end; i++) {
+            const q = questions[i];
+            const userAnswer = userAnswers[i];
+            const isFlagged = flagged[i];
+            const stateText = userAnswer === null ? 'Not yet answered' : 'Answered';
+
+            html += `
+                <div class="que" id="q-${i}">
+                    <div class="info">
+                        <h3 class="no">Question <span class="qno">${i+1}</span></h3>
+                        <div class="state">${stateText}</div>
+                        <div class="questionflag editable">
+                            <a class="flag-action ${isFlagged ? 'active' : ''}" onclick="toggleFlag(${i})">⚐ ${isFlagged ? 'Remove flag' : 'Flag question'}</a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="qtext">${q.text}</div>
+                        <fieldset class="ablock">
+                            <div class="answer">
+            `;
+
+            q.options.forEach((opt, optIdx) => {
+                const checked = (userAnswer === optIdx) ? 'checked' : '';
+                const letter = String.fromCharCode(97 + optIdx);
+                html += `
+                    <div class="r${optIdx % 2 === 0 ? '0' : '1'}">
+                        <input type="radio" name="q${i}" value="${optIdx}" id="q${i}_${optIdx}" ${checked} onclick="selectOption(${i}, ${optIdx})">
+                        <label for="q${i}_${optIdx}"><span class="answernumber">${letter}. </span>${opt}</label>
+                    </div>
+                `;
+            });
+
+            html += `
+                            </div>
+                            <div class="qtype_multichoice_clearchoice">
+                                <a onclick="clearChoice(${i})">Clear my choice</a>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            `;
+        }
+
+        questionsContainer.innerHTML = html;
+        renderNavButtons();
+        updatePageNavButtons();
+    }
+
+    function renderNavButtons() {
+        qnButtonsContainer.innerHTML = '';
+        const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+        
+        for (let i = 0; i < questions.length; i++) {
+            const isAnswered = userAnswers[i] !== null;
+            const isFlagged = flagged[i];
+            const targetPage = Math.floor(i / QUESTIONS_PER_PAGE);
+            const isOnCurrentPage = (currentPage === targetPage);
+            
+            let btnClass = 'qnbutton';
+            if (isAnswered) btnClass += ' answered';
+            if (isFlagged) btnClass += ' flagged';
+            if (isOnCurrentPage) btnClass += ' thispage';
+            
+            const btn = document.createElement('a');
+            btn.className = btnClass;
+            btn.textContent = (i + 1).toString();
+            
+            // FIXED: Navigate to correct page before scrolling
+            btn.onclick = (function(idx, targetPg) {
+                return function() {
+                    // Switch to the page containing this question
+                    if (currentPage !== targetPg) {
+                        currentPage = targetPg;
+                        renderQuestions();
+                    }
+                    // Scroll to the question
+                    scrollToQuestion(idx);
+                    closeDrawer();
+                };
+            })(i, targetPage);
+            
+            qnButtonsContainer.appendChild(btn);
+        }
+    }
+
+    function updatePageNavButtons() {
+        const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+        const navDiv = document.getElementById('pageNavButtons');
+        if (currentPage === 0) {
+            navDiv.innerHTML = `<button class="mod_quiz-next-nav" id="nextPageBtn">Next page</button>`;
+            document.getElementById('nextPageBtn').onclick = () => changePage(1);
+        } else if (currentPage === totalPages - 1) {
+            navDiv.innerHTML = `<button class="mod_quiz-prev-nav" id="prevPageBtn">Previous page</button>`;
+            document.getElementById('prevPageBtn').onclick = () => changePage(-1);
+        } else {
+            navDiv.innerHTML = `
+                <button class="mod_quiz-prev-nav" id="prevPageBtn">Previous page</button>
+                <button class="mod_quiz-next-nav" id="nextPageBtn">Next page</button>
+            `;
+            document.getElementById('prevPageBtn').onclick = () => changePage(-1);
+            document.getElementById('nextPageBtn').onclick = () => changePage(1);
+        }
+    }
+
+    window.selectOption = function(qid, optIdx) {
+        userAnswers[qid] = optIdx;
+        saveToLocalStorage();
+        renderQuestions();
+    };
+
+    window.clearChoice = function(qid) {
+        userAnswers[qid] = null;
+        saveToLocalStorage();
+        renderQuestions();
+    };
+
+    window.toggleFlag = function(qid) {
+        flagged[qid] = !flagged[qid];
+        saveToLocalStorage();
+        renderQuestions();
+    };
+
+    function scrollToQuestion(qid) {
+        const element = document.getElementById(`q-${qid}`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    function changePage(delta) {
+        const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+        const newPage = currentPage + delta;
+        if (newPage >= 0 && newPage < totalPages) {
+            currentPage = newPage;
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeDrawer();
+        }
+    }
+
+    function openDrawer() {
+        quizDrawer.classList.add('open');
+        drawerOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        quizDrawer.classList.remove('open');
+        drawerOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    openDrawerBtn.onclick = openDrawer;
+    closeDrawerBtn.onclick = closeDrawer;
+    drawerOverlay.onclick = closeDrawer;
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (timeSeconds <= 0) {
+                clearInterval(timerInterval);
+                quizTimeLeft.textContent = "00:00:00";
+                alert("Time is up! Submitting your exam...");
+                showSummary();
+            } else {
+                timeSeconds--;
+                updateTimerDisplay();
+            }
+        }, 1000);
+    }
+
+    function calculateScore() {
+        let correct = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === questions[i].correct) {
+                correct++;
+            }
+        }
+        return { correct, total: questions.length, percentage: Math.round((correct / questions.length) * 100) };
+    }
+
+    function showSummary() {
+        if (timerInterval) clearInterval(timerInterval);
+        let summaryHtml = '';
+        for (let i = 0; i < questions.length; i++) {
+            const isAnswered = userAnswers[i] !== null;
+            const isCorrect = isAnswered && userAnswers[i] === questions[i].correct;
+            let statusClass = '';
+            let statusText = '';
+            if (!isAnswered) {
+                statusClass = 'summary-wrong';
+                statusText = 'Not answered';
+            } else if (isCorrect) {
+                statusClass = 'summary-correct';
+                statusText = 'Correct';
+            } else {
+                statusClass = 'summary-wrong';
+                statusText = 'Wrong';
+            }
+            summaryHtml += `
+                <div class="summary-item" onclick="goToQuestionAndClose(${i})">
+                    <strong>Question ${i+1}</strong>: <span class="${statusClass}">${statusText}</span>
+                </div>
+            `;
+        }
+        document.getElementById('summaryList').innerHTML = summaryHtml;
+        summaryModal.style.display = 'flex';
+        closeDrawer();
+    }
+    
+    function goToQuestionAndClose(qid) {
+        const targetPage = Math.floor(qid / QUESTIONS_PER_PAGE);
+        if (currentPage !== targetPage) {
+            currentPage = targetPage;
+            renderQuestions();
+        }
+        scrollToQuestion(qid);
+        summaryModal.style.display = 'none';
+        startTimer();
+        closeDrawer();
+    }
+
+    function showFinalScore() {
+        const score = calculateScore();
+        let wrongList = '';
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === null || userAnswers[i] !== questions[i].correct) {
+                const status = userAnswers[i] === null ? 'Not answered' : 'Wrong';
+                const correctLetter = String.fromCharCode(97 + questions[i].correct);
+                wrongList += `<li>Q${i+1}: ${status} (Correct: ${correctLetter}. ${questions[i].options[questions[i].correct]})</li>`;
+            }
+        }
+        document.getElementById('scoreDetails').innerHTML = `
+            <p style="font-size: 1.5rem; text-align: center;"><strong>${score.correct}/${score.total}</strong> (${score.percentage}%)</p>
+            <hr>
+            <p><strong>Review:</strong></p>
+            <ul style="max-height: 300px; overflow-y: auto;">${wrongList || '<li>Perfect score! All correct!</li>'}</ul>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #6a737b;">This is a practice exam. Your answers are saved locally.</p>
+        `;
+        summaryModal.style.display = 'none';
+        scoreModal.style.display = 'flex';
+    }
+
+    finishAttemptLink.onclick = (e) => {
+        e.preventDefault();
+        showSummary();
+    };
+
+    document.getElementById('cancelSummaryBtn').onclick = () => {
+        summaryModal.style.display = 'none';
+        startTimer();
+    };
+
+    document.getElementById('submitFinalBtn').onclick = showFinalScore;
+    document.getElementById('closeScoreBtn').onclick = () => {
+        scoreModal.style.display = 'none';
+    };
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'index.html';
+    }
+
+    logoutBtn.onclick = logout;
+
+    function checkLogin() {
+        const loggedIn = localStorage.getItem('hayyo_logged_in');
+        if (!loggedIn || loggedIn !== 'true') {
+            window.location.href = 'index.html';
+        }
+    }
+
+    function init() {
+        checkLogin();
+        loadFromLocalStorage();
+        renderQuestions();
+        updateTimerDisplay();
+        startTimer();
+    }
+
+    init();
+
+    window.addEventListener('beforeunload', function(e) {
+        const answered = userAnswers.filter(a => a !== null).length;
+        if (answered > 0 && answered < questions.length && timeSeconds > 0) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved answers. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+</script>
+</body>
+</html>
